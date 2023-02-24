@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-// Annotate the Replay struct with struct tags to control how the keys appear in the
-// JSON-encoded output.
 type Replay struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"-"`
@@ -152,13 +150,12 @@ LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
 		return nil, Metadata{}, err // Update this to return an empty Metadata struct.
 	}
 	defer rows.Close()
-	// Declare a totalRecords variable.
 	totalRecords := 0
 	replays := []*Replay{}
 	for rows.Next() {
 		var replay Replay
 		err := rows.Scan(
-			&totalRecords, // Scan the count from the window function into totalRecords.
+			&totalRecords,
 			&replay.ID,
 			&replay.CreatedAt,
 			&replay.Title,
@@ -175,9 +172,6 @@ LIMIT $3 OFFSET $4`, filters.sortColumn(), filters.sortDirection())
 	if err = rows.Err(); err != nil {
 		return nil, Metadata{}, err // Update this to return an empty Metadata struct.
 	}
-	// Generate a Metadata struct, passing in the total record count and pagination
-	// parameters from the client.
 	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
-	// Include the metadata struct when returning.
 	return replays, metadata, nil
 }

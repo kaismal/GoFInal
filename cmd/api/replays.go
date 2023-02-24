@@ -104,7 +104,7 @@ func (app *application) updateReplayHandler(w http.ResponseWriter, r *http.Reque
 		replay.Runtime = *input.Runtime
 	}
 	if input.Heroes != nil {
-		replay.Heroes = input.Heroes // Note that we don't need to dereference a slice.
+		replay.Heroes = input.Heroes
 	}
 	v := validator.New()
 	if data.ValidateReplay(v, replay); !v.Valid() {
@@ -146,7 +146,6 @@ func (app *application) deleteReplayHandler(w http.ResponseWriter, r *http.Reque
 		}
 		return
 	}
-	// Return a 200 OK status code along with a success message.
 	err = app.writeJSON(w, http.StatusOK, envelope{"message": "replay successfully deleted"}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
@@ -171,13 +170,11 @@ func (app *application) listReplaysHandler(w http.ResponseWriter, r *http.Reques
 		app.failedValidationResponse(w, r, v.Errors)
 		return
 	}
-	// Accept the metadata struct as a return value.
 	replays, metadata, err := app.models.Replays.GetAll(input.Title, input.Heroes, input.Filters)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
 	}
-	// Include the metadata in the response envelope.
 	err = app.writeJSON(w, http.StatusOK, envelope{"replays": replays, "metadata": metadata}, nil)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)

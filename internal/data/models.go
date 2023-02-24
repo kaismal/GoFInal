@@ -12,7 +12,7 @@ var (
 
 type Models struct {
 	Replays     ReplayModel
-	Permissions PermissionModel // Add a new Permissions field.
+	Permissions PermissionModel
 	Tokens      TokenModel
 	Users       UserModel
 }
@@ -20,7 +20,7 @@ type Models struct {
 func NewModels(db *sql.DB) Models {
 	return Models{
 		Replays:     ReplayModel{DB: db},
-		Permissions: PermissionModel{DB: db}, // Initialize a new PermissionModel instance.
+		Permissions: PermissionModel{DB: db},
 		Tokens:      TokenModel{DB: db},
 		Users:       UserModel{DB: db},
 	}
