@@ -37,7 +37,6 @@ func (app *application) serve() error {
 		app.logger.PrintInfo("completing background tasks", map[string]string{
 			"addr": srv.Addr,
 		})
-
 		app.wg.Wait()
 		shutdownError <- nil
 	}()

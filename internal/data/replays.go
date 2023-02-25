@@ -52,7 +52,6 @@ func (m ReplayModel) Get(id int64) (*Replay, error) {
 	if id < 1 {
 		return nil, ErrRecordNotFound
 	}
-	// Remove the pg_sleep(10) clause.
 	query := `
 SELECT id, created_at, title, year, runtime, heroes, version
 FROM replays
@@ -60,7 +59,6 @@ WHERE id = $1`
 	var replay Replay
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	// Remove &[]byte{} from the first Scan() destination.
 	err := m.DB.QueryRowContext(ctx, query, id).Scan(
 		&replay.ID,
 		&replay.CreatedAt,
@@ -95,10 +93,8 @@ RETURNING version`
 		replay.ID,
 		replay.Version,
 	}
-	// Create a context with a 3-second timeout.
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(&replay.Version)
 	if err != nil {
 		switch {

@@ -169,7 +169,6 @@ ON users.id = tokens.user_id
 WHERE tokens.hash = $1
 AND tokens.scope = $2
 AND tokens.expiry > $3`
-
 	args := []any{tokenHash[:], tokenScope, time.Now()}
 	var user User
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

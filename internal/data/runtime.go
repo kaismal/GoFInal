@@ -7,12 +7,8 @@ import (
 	"strings"
 )
 
-// Define an error that our UnmarshalJSON() method can return if we're unable to parse
-// or convert the JSON string successfully.
 var ErrInvalidRuntimeFormat = errors.New("invalid runtime format")
 
-// Declare a custom Runtime type, which has the underlying type int32 (the same as our
-// Replay struct field).
 type Runtime int32
 
 func (r Runtime) MarshalJSON() ([]byte, error) {
